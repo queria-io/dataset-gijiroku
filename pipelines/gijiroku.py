@@ -6,7 +6,7 @@
 
 出力: data/minutes/<地方公共団体コード>/<西暦年>.ndjson.gz（1 行 = 1 発言）
 
-取得するのは今年から VOICES_YEARS 年分（0 なら会議の無い年が 3 年続くまでさかのぼる）。
+取得するのは今年から GIJIROKU_YEARS 年分（0 なら会議の無い年が 3 年続くまでさかのぼる）。
 直近 2 年より前の年は、ファイルが既にあれば飛ばす（手元で全年を取る途中で止まったときに続きから取るため）。
 """
 
@@ -29,9 +29,9 @@ from shared.fetch import replacing, request
 
 logger = logging.getLogger("pipelines")
 
-USER_AGENT = "dataset-voices (+https://github.com/queria-io/dataset-voices)"
+USER_AGENT = "dataset-gijiroku (+https://github.com/queria-io/dataset-gijiroku)"
 OUTPUT = Path("data/minutes")
-YEARS = int(os.environ.get("VOICES_YEARS", "2"))
+YEARS = int(os.environ.get("GIJIROKU_YEARS", "2"))
 INTERVAL_SECONDS = 1.0
 # 会議の種類。1 定例会、2 臨時会、3 委員会
 KINDS = (1, 2, 3)
@@ -177,7 +177,7 @@ def check_assembly(a: Assembly, output: Path, fetched_at: str, this_year: int) -
     return 0
 
 
-def download_voices(output: Path = OUTPUT) -> int:
+def download_gijiroku(output: Path = OUTPUT) -> int:
     fetched_at = datetime.now(UTC).isoformat()
     this_year = datetime.now(ZoneInfo("Asia/Tokyo")).year
     # FDL_WORKING が無いのは PR のビルド確認。公開しないので各議会の最新の 1 件だけを取る

@@ -26,7 +26,7 @@
 
 ```sql
 SELECT assembly, date, meeting_name, speaker, speech_url
-FROM voices.minutes.speeches
+FROM gijiroku.minutes.speeches
 WHERE speech LIKE '%待機児童%'
 ORDER BY date DESC
 LIMIT 20;
@@ -39,7 +39,7 @@ uv sync
 scripts/build.sh
 ```
 
-取得の間隔は 1 秒です。1 回のビルドで取得するのは各議会の今年から 2 年分（`VOICES_YEARS`）です。すべての年を取得するときは手元で `VOICES_YEARS=0 scripts/build.sh` を実行します。途中で止まったときは、直近 2 年より前の取得済みの年を飛ばして続きから取得します。
+取得の間隔は 1 秒です。1 回のビルドで取得するのは各議会の今年から 2 年分（`GIJIROKU_YEARS`）です。すべての年を取得するときは手元で `GIJIROKU_YEARS=0 scripts/build.sh` を実行します。途中で止まったときは、直近 2 年より前の取得済みの年を飛ばして続きから取得します。
 
 ## 出典と利用条件
 

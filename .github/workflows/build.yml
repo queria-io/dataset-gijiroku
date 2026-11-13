@@ -19,6 +19,6 @@ jobs:
           submodules: true
       - uses: astral-sh/setup-uv@v7
       - run: uv sync
-      - run: uv run python -m unittest pipelines.test_voices
+      - run: uv run python -m unittest pipelines.test_gijiroku
       - run: uv run python -c "import main; main.download()"
       - run: uv run dbt build --profiles-dir ci

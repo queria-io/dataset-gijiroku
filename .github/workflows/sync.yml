@@ -22,8 +22,8 @@ jobs:
       id-token: write
     uses: queria-io/dataset-shared/.github/workflows/sync.yml@67443c88b6ec355559c91bf866239e10073ccf83
     with:
-      dataset_name: voices
-      # 過去分は手元で VOICES_YEARS=0 にして取る。Sync は今年と昨年の分だけ
+      dataset_name: gijiroku
+      # 過去分は手元で GIJIROKU_YEARS=0 にして取る。Sync は今年と昨年の分だけ
       timeout_minutes: 150
     secrets:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

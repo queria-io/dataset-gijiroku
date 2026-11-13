@@ -1,7 +1,7 @@
-name: "voices"
+name: "gijiroku"
 version: "1.0.0"
 
-profile: "voices"
+profile: "gijiroku"
 
 model-paths: ["models"]
 macro-paths: ["shared/macros"]
@@ -11,6 +11,6 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  voices:
-    +database: voices
+  gijiroku:
+    +database: gijiroku
     +materialized: table

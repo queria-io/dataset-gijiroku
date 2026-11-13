@@ -1,10 +1,10 @@
-voices:
+gijiroku:
   target: default
   outputs:
     default:
       type: duckdb
       path: ":memory:"
-      database: voices
+      database: gijiroku
       schema: main
       threads: 1
       extensions:
@@ -23,7 +23,7 @@ voices:
       # fdl commit が上げる (shared/scripts/build-fdl.sh)
       attach:
         - path: "ducklake:{{ env_var('FDL_WORKING') }}"
-          alias: voices
+          alias: gijiroku
           is_ducklake: true
           options:
             DATA_PATH: "{{ env_var('FDL_DATA_PATH') }}"

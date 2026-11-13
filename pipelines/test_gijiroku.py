@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from pipelines.voices import ROW, Document, meeting_date, split_speaker, text
+from pipelines.gijiroku import ROW, Document, meeting_date, split_speaker, text
 
 
 class ParseTest(unittest.TestCase):
