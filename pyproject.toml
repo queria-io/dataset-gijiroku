@@ -1,0 +1,12 @@
+[project]
+name = "dataset-gijiroku"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "fdl-cli>=0.19.0",
+    "dbt-core>=1.11.2",
+    "dbt-duckdb>=1.10.0",
+]
+
+[dependency-groups]
+dev = ["duckdb>=1.4"]

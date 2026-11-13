@@ -1,0 +1,34 @@
+gijiroku:
+  target: default
+  outputs:
+    default:
+      type: duckdb
+      path: ":memory:"
+      database: gijiroku
+      schema: main
+      threads: 1
+      extensions:
+        - httpfs
+        - ducklake
+        - sqlite
+      # ビルドが公開ストレージを読むときの名乗り。shared/scripts/build-fdl.sh が
+      # queria-build として渡す。無いと data.queria.io の利用統計に
+      # 自分のビルドが利用者として混ざる。
+      # settings: ではなく config_options: — custom_user_agent は接続を開く
+      # ときにしか決められず、SET では変えられない
+      config_options:
+        custom_user_agent: "{{ env_var('QUERIA_USER_AGENT', '') }}"
+      # fdl checkout が作った作業場のカタログ (SQLite) に書く。新しいデータファイルは
+      # FDL_DATA_PATH (data.queria.io から取り出したときは手元のフォルダ) に書き、
+      # fdl commit が上げる (shared/scripts/build-fdl.sh)
+      attach:
+        - path: "ducklake:{{ env_var('FDL_WORKING') }}"
+          alias: gijiroku
+          is_ducklake: true
+          options:
+            DATA_PATH: "{{ env_var('FDL_DATA_PATH') }}"
+            OVERRIDE_DATA_PATH: true
+            META_TYPE: "'sqlite'"
+            # 既定のままだと小さいテーブルがカタログの中に収まり parquet が
+            # 1 つも生成されない。fdl commit はインライン化された行を断るので、常に切る
+            DATA_INLINING_ROW_LIMIT: 0

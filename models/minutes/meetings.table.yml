@@ -1,0 +1,33 @@
+schema: minutes
+name: meetings
+title: 地方議会の会議録
+description: |-
+  地方議会の本会議・委員会の会議録です。1 行が会議の 1 日分の会議録です。
+
+  - 発言は minutes.speeches にあり、meeting_id で結合できます
+  - lg_code（地方公共団体コード）で議会を絞り込めます
+primary_key: [meeting_id]
+fields:
+  - name: meeting_id
+    title: 会議録 ID
+    description: 地方公共団体コードと VOICES の文書番号（FINO）を「:」でつないだ ID
+  - name: lg_code
+    title: 地方公共団体コード
+    description: 6 桁（検査数字つき）
+  - name: assembly
+    title: 議会名
+  - name: session
+    title: 会議
+    description: 例 令和　７年第４回定例会、令和　７年１２月１０日議会運営委員会
+  - name: meeting_name
+    title: 会議名
+    description: 会議と号数。例 令和　７年第４回定例会 11月19日-26号
+  - name: date
+    title: 開会日
+  - name: speeches
+    title: 発言数
+    description: 会議録の冒頭（speech_order 0）を含む
+  - name: meeting_url
+    title: 会議録の URL
+  - name: fetched_at
+    title: 取得日時

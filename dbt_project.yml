@@ -1,0 +1,16 @@
+name: "gijiroku"
+version: "1.0.0"
+
+profile: "gijiroku"
+
+model-paths: ["models"]
+macro-paths: ["shared/macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  gijiroku:
+    +database: gijiroku
+    +materialized: table

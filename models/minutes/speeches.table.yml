@@ -1,0 +1,39 @@
+schema: minutes
+name: speeches
+title: 地方議会の発言
+description: |-
+  地方議会の本会議・委員会での発言です。1 行が 1 発言です。
+
+  - speech_order が 0 の行は、出席者・議事日程などを載せた会議録の冒頭です
+  - 会議録の情報は minutes.meetings にあり、meeting_id で結合できます
+  - 語を含む発言は speech の LIKE で検索できます
+primary_key: [speech_id]
+fields:
+  - name: speech_id
+    title: 発言 ID
+    description: 会議録 ID と発言番号を「:」でつないだ ID
+  - name: meeting_id
+    title: 会議録 ID
+    description: minutes.meetings と結合できる
+  - name: lg_code
+    title: 地方公共団体コード
+  - name: assembly
+    title: 議会名
+  - name: date
+    title: 開会日
+  - name: meeting_name
+    title: 会議名
+  - name: speech_order
+    title: 発言番号
+    description: 会議録の中での順番。0 は会議録の冒頭
+  - name: speaker
+    title: 発言者
+    description: 会議録の表記から、名前と役職の間の全角スペースを半角にし、括弧の中の空白を除いたもの。例 議長（木梨もりよし議員）、二十五番（中塚さちよ議員）、石川ナオミ 議長。会議録の冒頭と日程の朗読は NULL
+  - name: speech
+    title: 発言
+    description: 発言の本文。発言者の表記は除く
+  - name: speech_url
+    title: 発言の URL
+    description: 会議録検索システムでこの発言を開く URL
+  - name: fetched_at
+    title: 取得日時
