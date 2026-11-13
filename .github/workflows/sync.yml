@@ -1,0 +1,29 @@
+name: Sync
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "*.md"
+  schedule:
+    # 会議録は開会から数か月たって登録される。毎週月曜 05:00 JST に直近 2 年分を取り直す
+    - cron: "0 20 * * 0"
+  workflow_dispatch:
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    # Queria への書き込みは GitHub Actions の OIDC で 1 時間のトークンを取って行う
+    permissions:
+      contents: read
+      id-token: write
+    uses: queria-io/dataset-shared/.github/workflows/sync.yml@67443c88b6ec355559c91bf866239e10073ccf83
+    with:
+      dataset_name: voices
+      # 過去分は手元で VOICES_YEARS=0 にして取る。Sync は今年と昨年の分だけ
+      timeout_minutes: 150
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

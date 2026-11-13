@@ -1,0 +1,50 @@
+# この dataset.yml は fdl commit が読む（FDL の dataset.json を YAML で書いたもの）。
+# 表の説明は models/ の *.table.yml に書く。表と列の型・NULL・行数は fdl commit がカタログから埋める。
+# Queria だけの項目（テーマ・カバー・列の意味）は annotations.queria に書く。
+name: voices
+title: 地方議会の会議録（VOICES）
+description: |-
+  会議録検索システム VOICES で公開されている地方議会の本会議・委員会の会議録を、会議録（minutes.meetings）と発言（minutes.speeches）のテーブルにしたデータセットです。今は東京都の世田谷区・杉並区の区議会を収録しています。
+
+  発言ごとに議会・開会日・会議名・発言者と本文を持ち、会議録 ID で 2 つのテーブルを結合できます。地方公共団体コード（lg_code）で議会を絞り込めます。毎週、各議会の会議録検索システムから今年と昨年の分を取り直し、まだ無い会議録を追記します。
+
+  出典：世田谷区議会・杉並区議会の会議録検索システムから取得・加工したものです。
+keywords:
+  - 地方議会
+  - 議会
+  - 会議録
+  - 議事録
+  - 発言
+  - 区議会
+  - 本会議
+  - 委員会
+  - 地方議員
+homepage: https://github.com/queria-io/dataset-voices
+language: ja
+# 会議録の利用条件は議会ごとに異なる。発言は政治上の演説又は陳述（著作権法 40 条 1 項）などの権利制限規定で利用する
+licenses:
+  - id: voices-minutes
+    title: 各議会の会議録の利用条件
+    url: https://github.com/queria-io/dataset-voices#出典と利用条件
+    commercial_use: false
+    share_alike: false
+    attribution_required: true
+sources:
+  - title: 世田谷区議会 会議録検索システム
+    path: http://kugi.city.setagaya.tokyo.jp/voices/
+  - title: 杉並区議会 会議録検索システム
+    path: https://suginami.gijiroku.com/voices/
+contributors:
+  - title: 世田谷区議会
+    roles: [publisher]
+  - title: 杉並区議会
+    roles: [publisher]
+spatial_coverage: [JP]
+update_frequency: weekly
+schemas:
+  - name: minutes
+    title: 会議録
+annotations:
+  queria:
+    themes: [government_finance]
+    cover: 🏛️
