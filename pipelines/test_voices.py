@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from pipelines.voices import ROW, Document, meeting_date, split_speaker
+from pipelines.voices import ROW, Document, meeting_date, split_speaker, text
 
 
 class ParseTest(unittest.TestCase):
@@ -16,6 +16,12 @@ class ParseTest(unittest.TestCase):
     def test_meeting_date(self):
         d = Document(1, 2025, "3034", "2022", "令和　７年第４回定例会", "11月19日-26号")
         self.assertEqual(meeting_date(d), date(2025, 11, 19))
+        d = Document(3, 2025, "3053", "2034", "令和　７年１２月１０日議会運営委員会", "目次")
+        self.assertEqual(meeting_date(d), date(2025, 12, 10))
+
+    def test_text_drops_cr(self):
+        fragment = "○議長（木梨もりよし議員）　散会いたします。<BR>\r\n<BR>\r\n"
+        self.assertEqual(split_speaker(text(fragment)), ("議長（木梨もりよし議員）", "散会いたします。"))
 
     def test_split_speaker(self):
         self.assertEqual(split_speaker("○議長（木梨もりよし議員）　これより開会します。"), ("議長（木梨もりよし議員）", "これより開会します。"))

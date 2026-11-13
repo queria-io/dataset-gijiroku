@@ -17,7 +17,7 @@ import logging
 import os
 import re
 import time
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from pathlib import Path
@@ -72,7 +72,8 @@ def get(a: Assembly, **params: str | int) -> str:
 def text(fragment: str) -> str:
     fragment = re.sub(r"<SCRIPT.*?</SCRIPT>", "", fragment, flags=re.S | re.I)
     fragment = re.sub(r"<BR\s*/?>", "\n", fragment, flags=re.I)
-    return html.unescape(re.sub(r"<[^>]+>", "", fragment))
+    # 本文の終わりに CRLF の改行が残るので、CR を除く
+    return html.unescape(re.sub(r"<[^>]+>", "", fragment)).replace("\r", "")
 
 
 ROW = re.compile(
@@ -92,11 +93,11 @@ def documents(a: Assembly, year: int, kind: int) -> list[Document]:
 
 
 def meeting_date(d: Document) -> date:
-    m = re.search(r"(\d+)月\s*(\d+)日", d.label) or re.search(r"([０-９\d]+)月\s*([０-９\d]+)日", d.title)
+    # \d と int() は全角の数字も読む
+    m = re.search(r"(\d+)月\s*(\d+)日", d.label) or re.search(r"(\d+)月\s*(\d+)日", d.title)
     if not m:
         raise ValueError(f"開会日が読めない: {d.title} {d.label}")
-    to_int = lambda s: int(s.translate(str.maketrans("０１２３４５６７８９", "0123456789")))
-    return date(d.year, to_int(m[1]), to_int(m[2]))
+    return date(d.year, int(m[1]), int(m[2]))
 
 
 def split_speaker(body: str, words: int = 1) -> tuple[str | None, str]:
@@ -135,10 +136,15 @@ def speeches(a: Assembly, d: Document) -> Iterator[dict]:
         }
 
 
-def write(path: Path, rows: list[dict], fetched_at: str) -> None:
+def write(path: Path, rows: Iterable[dict], fetched_at: str) -> int:
+    """rows を書き、書いた行数を返す。1 年分を手元に溜めずに、取りながら書く。"""
     path.parent.mkdir(parents=True, exist_ok=True)
+    count = 0
     with replacing(path) as partial, gzip.open(partial, "wt", encoding="utf-8") as out:
-        out.writelines(json.dumps({**r, "fetched_at": fetched_at}, ensure_ascii=False) + "\n" for r in rows)
+        for r in rows:
+            out.write(json.dumps({**r, "fetched_at": fetched_at}, ensure_ascii=False) + "\n")
+            count += 1
+    return count
 
 
 def download_assembly(a: Assembly, output: Path, fetched_at: str, this_year: int) -> int:
@@ -152,10 +158,9 @@ def download_assembly(a: Assembly, output: Path, fetched_at: str, this_year: int
         docs = [d for kind in KINDS for d in documents(a, year, kind)]
         empty = 0 if docs else empty + 1
         if docs:
-            rows = [row for d in docs for row in speeches(a, d)]
-            write(path, rows, fetched_at)
-            logger.info("  %s %d年: 会議録 %d 件、%d 発言", a.name, year, len(docs), len(rows))
-            total += len(rows)
+            count = write(path, (row for d in docs for row in speeches(a, d)), fetched_at)
+            logger.info("  %s %d年: 会議録 %d 件、%d 発言", a.name, year, len(docs), count)
+            total += count
         year -= 1
     return total
 
@@ -165,10 +170,10 @@ def check_assembly(a: Assembly, output: Path, fetched_at: str, this_year: int) -
     for year in (this_year, this_year - 1):
         docs = [d for kind in KINDS for d in documents(a, year, kind)]
         if docs:
-            rows = list(speeches(a, docs[0]))
-            write(output / a.lg_code / f"{year}.ndjson.gz", rows, fetched_at)
-            logger.info("  %s %s %s: %d 発言", a.name, docs[0].title, docs[0].label, len(rows))
-            return len(rows)
+            latest = max(docs, key=meeting_date)
+            count = write(output / a.lg_code / f"{year}.ndjson.gz", speeches(a, latest), fetched_at)
+            logger.info("  %s %s %s: %d 発言", a.name, latest.title, latest.label, count)
+            return count
     return 0
 
 
@@ -177,7 +182,11 @@ def download_voices(output: Path = OUTPUT) -> int:
     this_year = datetime.now(ZoneInfo("Asia/Tokyo")).year
     # FDL_WORKING が無いのは PR のビルド確認。公開しないので各議会の最新の 1 件だけを取る
     run = download_assembly if os.environ.get("FDL_WORKING") else check_assembly
-    total = sum(run(a, output, fetched_at, this_year) for a in ASSEMBLIES)
-    if total == 0:
-        raise SystemExit("1 件も取得できない（会議録検索システムの形が変わった？）")
+    total = 0
+    for a in ASSEMBLIES:
+        # 議会ごとに確かめる。1 つの議会だけ取れなくなっても、追記が黙って止まらないように
+        count = run(a, output, fetched_at, this_year)
+        if count == 0:
+            raise SystemExit(f"{a.name}: 1 件も取得できない（会議録検索システムの形が変わった？）")
+        total += count
     return total
