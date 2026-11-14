@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: queria-io/dataset-shared/.github/workflows/sync.yml@67443c88b6ec355559c91bf866239e10073ccf83
+    uses: queria-io/dataset-shared/.github/workflows/sync.yml@b5dfed7f4a9a9171090246edcd09d0cb1e9ae523
     with:
       dataset_name: gijiroku
       # 過去分は手元で GIJIROKU_YEARS=0 にして取る。Sync は今年と昨年の分だけ
