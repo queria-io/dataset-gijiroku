@@ -13,7 +13,7 @@ select
     speech,
     speech_url,
     fetched_at
-from {{ ref('raw_speeches') }}
+from {{ ref('stg_speeches') }}
 {% if is_incremental() %}
 where meeting_id not in (select meeting_id from {{ this }})
 {% endif %}

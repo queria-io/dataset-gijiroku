@@ -14,3 +14,9 @@ models:
   gijiroku:
     +database: gijiroku
     +materialized: table
+    # raw は取得したまま、stg は ID の付与と重複の除外。どちらも mart の SQL に展開し、テーブルは作らない
+    minutes:
+      raw:
+        +materialized: ephemeral
+      stg:
+        +materialized: ephemeral
