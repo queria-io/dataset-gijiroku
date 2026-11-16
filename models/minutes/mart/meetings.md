@@ -1,5 +1,6 @@
-schema: minutes
-name: meetings
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: minutes.meetings
 title: 地方議会の会議録
 description: |-
   地方議会の本会議・委員会の会議録です。1 行が会議の 1 日分の会議録です。
@@ -14,7 +15,7 @@ fields:
   - name: lg_code
     title: 地方公共団体コード
     description: 6 桁（検査数字つき）
-    annotations: { queria: { semantic: { role: entity, name: city } } }
+    semantic: {role: entity, name: city}
   - name: assembly
     title: 議会名
   - name: session
@@ -32,3 +33,4 @@ fields:
     title: 会議録の URL
   - name: fetched_at
     title: 取得日時
+---
