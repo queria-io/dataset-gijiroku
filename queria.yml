@@ -1,6 +1,4 @@
-# この dataset.yml は fdl commit が読む（FDL の dataset.json を YAML で書いたもの）。
-# 表の説明は models/ の *.table.yml に書く。表と列の型・NULL・行数は fdl commit がカタログから埋める。
-# Queria だけの項目（テーマ・カバー・列の意味）は annotations.queria に書く。
+$schema: https://queria.io/schemas/dataset/v1.json
 name: gijiroku
 title: 地方議会の会議録（VOICES）
 description: |-
@@ -21,7 +19,6 @@ keywords:
   - 地方議員
 homepage: https://github.com/queria-io/dataset-gijiroku
 language: ja
-# 会議録の利用条件は議会ごとに異なる。発言は政治上の演説又は陳述（著作権法 40 条 1 項）などの権利制限規定で利用する
 licenses:
   - id: gijiroku-minutes
     title: 各議会の会議録の利用条件
@@ -44,7 +41,5 @@ update_frequency: weekly
 schemas:
   - name: minutes
     title: 会議録
-annotations:
-  queria:
-    themes: [government_finance]
-    cover: 🏛️
+themes: [government_finance]
+cover: 🏛️

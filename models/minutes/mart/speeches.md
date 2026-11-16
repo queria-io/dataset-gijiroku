@@ -1,5 +1,6 @@
-schema: minutes
-name: speeches
+---
+$schema: https://queria.io/schemas/table/v1.json
+table: minutes.speeches
 title: 地方議会の発言
 description: |-
   地方議会の本会議・委員会での発言です。1 行が 1 発言です。
@@ -17,7 +18,7 @@ fields:
     description: minutes.meetings と結合できる
   - name: lg_code
     title: 地方公共団体コード
-    annotations: { queria: { semantic: { role: entity, name: city } } }
+    semantic: {role: entity, name: city}
   - name: assembly
     title: 議会名
   - name: date
@@ -38,3 +39,4 @@ fields:
     description: 会議録検索システムでこの発言を開く URL
   - name: fetched_at
     title: 取得日時
+---
