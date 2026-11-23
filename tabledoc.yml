@@ -31,10 +31,10 @@ licenses:
 sources:
   - id: voices
     title: 世田谷区議会 会議録検索システム
-    path: http://kugi.city.setagaya.tokyo.jp/voices/
+    url: http://kugi.city.setagaya.tokyo.jp/voices/
   - id: suginami-voices
     title: 杉並区議会 会議録検索システム
-    path: https://suginami.gijiroku.com/voices/
+    url: https://suginami.gijiroku.com/voices/
 contributors:
   - id: setagaya-gikai
     title: 世田谷区議会
