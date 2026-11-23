@@ -16,7 +16,7 @@ columns:
     description: minutes.meetings と結合できる
   - name: lg_code
     title: 地方公共団体コード
-    entity: {type: foreign, name: city}
+    entity: city
   - name: assembly
     title: 議会名
   - name: date
