@@ -18,7 +18,6 @@ topics:
   - 本会議
   - 委員会
   - 地方議員
-homepage: https://github.com/queria-io/dataset-gijiroku
 language: ja
 # 会議録の利用条件は議会ごとに異なる。発言は政治上の演説又は陳述（著作権法 40 条 1 項）などの権利制限規定で利用する
 licenses:
