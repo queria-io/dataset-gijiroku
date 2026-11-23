@@ -1,6 +1,4 @@
----
-$schema: https://queria.io/schemas/table/v1.json
-table: minutes.meetings
+$schema: https://tabledoc.queria.io/schemas/table/v1.json
 title: 地方議会の会議録
 description: |-
   地方議会の本会議・委員会の会議録です。1 行が会議の 1 日分の会議録です。
@@ -8,14 +6,14 @@ description: |-
   - 発言は minutes.speeches にあり、meeting_id で結合できます
   - lg_code（地方公共団体コード）で議会を絞り込めます
 primary_key: [meeting_id]
-fields:
+columns:
   - name: meeting_id
     title: 会議録 ID
     description: 地方公共団体コードと VOICES の文書番号（FINO）を「:」でつないだ ID
   - name: lg_code
     title: 地方公共団体コード
     description: 6 桁（検査数字つき）
-    semantic: {role: entity, name: city}
+    entity: {type: foreign, name: city}
   - name: assembly
     title: 議会名
   - name: session
@@ -33,4 +31,3 @@ fields:
     title: 会議録の URL
   - name: fetched_at
     title: 取得日時
----

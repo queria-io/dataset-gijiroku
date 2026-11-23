@@ -1,4 +1,4 @@
-$schema: https://queria.io/schemas/dataset/v1.json
+$schema: https://tabledoc.queria.io/schemas/dataset/v1.json
 name: gijiroku
 title: 地方議会の会議録（VOICES）
 description: |-
@@ -7,7 +7,7 @@ description: |-
   発言ごとに議会・開会日・会議名・発言者と本文を持ち、会議録 ID で 2 つのテーブルを結合できます。地方公共団体コード（lg_code）で議会を絞り込めます。毎週、各議会の会議録検索システムから今年と昨年の分を取り直し、まだ無い会議録を追記します。
 
   出典：世田谷区議会・杉並区議会の会議録検索システムから取得・加工したものです。
-keywords:
+topics:
   - 地方議会
   - 議会
   - 会議録
@@ -28,19 +28,21 @@ licenses:
     share_alike: false
     attribution_required: true
 sources:
-  - title: 世田谷区議会 会議録検索システム
+  - id: voices
+    title: 世田谷区議会 会議録検索システム
     path: http://kugi.city.setagaya.tokyo.jp/voices/
-  - title: 杉並区議会 会議録検索システム
+  - id: suginami-voices
+    title: 杉並区議会 会議録検索システム
     path: https://suginami.gijiroku.com/voices/
 contributors:
-  - title: 世田谷区議会
+  - id: setagaya-gikai
+    title: 世田谷区議会
     roles: [publisher]
-  - title: 杉並区議会
+  - id: suginami-gikai
+    title: 杉並区議会
     roles: [publisher]
 spatial_coverage: [JP]
 update_frequency: weekly
 schemas:
   - name: minutes
     title: 会議録
-themes: [government_finance]
-cover: 🏛️
