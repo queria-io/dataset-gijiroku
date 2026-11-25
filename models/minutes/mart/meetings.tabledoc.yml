@@ -19,7 +19,6 @@ columns:
   - name: session
     title: 会議
     description: 例 令和　７年第４回定例会、令和　７年１２月１０日議会運営委員会
-    dimension: categorical
   - name: meeting_name
     title: 会議名
     description: 会議と号数。例 令和　７年第４回定例会 11月19日-26号
